@@ -1,0 +1,44 @@
+function createDragPolar(aero)
+
+alpha = -15:0.05:20;
+Mach = 0:0.1:0.9;
+
+try
+    aero.swpc4*pi/180;
+  %Ratio of lift curve slope to ideal
+Kappa = (aero.CLalpha*180/pi)/(2*pi);
+
+%Prandtl-Glauert Mach number parameter
+BetaMach = (1-Mach.^2).^0.5;
+hold on
+for i = 1:length(BetaMach)
+CLalphaW(i) = pi/180*(2*pi*aero.AR)/(2+sqrt((aero.AR*BetaMach(i)/Kappa)^2*(1+...
+    ((tan(aero.swpc4*pi/180)*tan(aero.swpc4*pi/180))/(BetaMach(i)^2)))+4));
+
+CLW(i,:) = aero.CL0+CLalphaW(i)*alpha;
+CDW(i,:) = aero.CD0+aero.K2*CLW(i,:)+aero.K1*CLW(i,:).^2;
+
+plot(CDW(i,:),CLW(i,:))
+legendinfo{i} = sprintf('Mach %.1f',Mach(i));
+end
+
+hold off
+title('Drag Polar')
+xlabel('Coefficient of Drag')
+ylabel('Coefficient of Lift')
+
+%Plot CL variation with Mach Number
+figure
+plot(alpha,CLW)
+title('C_L vs. \alpha at Increasing Mach')
+xlabel('Angle of Attack [deg]');
+ylabel('Coefficient of Lift');
+legend(legendinfo,'Location','Best')
+
+%Plot CD variation with Mach Number
+figure
+plot(alpha,CDW)
+title('C_D vs. \alpha at Increasing Mach')
+xlabel('Angle of Attack [deg]');
+ylabel('Coefficient of Drag');
+legend(legendinfo,'Location','Best')

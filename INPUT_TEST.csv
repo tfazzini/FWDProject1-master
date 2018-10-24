@@ -1,0 +1,14 @@
+flight_condition,h,V,s,t,power
+takeoff,0,NaN,NaN,NaN,normal
+climb,BCA,NaN,NaN,NaN,normal
+cruise,BCA,BCM,911417,NaN,normal
+cruise,20000,506.343,607612,NaN,normal
+air_refuel,20000,421.952,NaN,1200,normal
+climb,BCA,BCM,NaN,NaN,normal
+cruise,BCA,BCM,607612,NaN,normal
+descend,15000,NaN,NaN,NaN,normal
+combat,15000,NaN,NaN,1200,normal
+climb,BCA,NaN,NaN,NaN,normal
+cruise,BCA,BCM,911417,NaN,normal
+descend,0,NaN,NaN,NaN,normal
+land,0,NaN,NaN,NaN,normal

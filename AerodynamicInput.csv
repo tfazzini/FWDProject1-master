@@ -1,0 +1,11 @@
+Parameter, Units, Value
+CLmax,-,1.4
+CLalpha,/deg,0.109662271
+CL0,-,0.4
+CD0,-,0.02
+CDR_TO,-,0.005
+CDR_Land,-,0.005
+Interference Drag Coefficient,-,0
+Aspect Ratio,-,4.883
+Oswalds Efficiency,-,0.8
+Quarter Chord Sweep,deg,15

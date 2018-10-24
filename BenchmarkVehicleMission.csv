@@ -1,0 +1,11 @@
+flight_condition,alt_ft,temp_f, V_f_fps,V_knots,Mach, h_obs_ft,s_nmi, s_obs_ft,s_takeoff_ft,s_land_ft,time_min,combat_gs, ROC_fps,power,fuel_allow_lb_per_eng,warmup_lb_per_min_per_eng,mil_power_runup_lb_per_eng,fuel_reserve_min,fuel_reserve_percent,speed_reserve_fps,height_reserve_ft
+takeoff,0,90,NaN,NaN,NaN,50,NaN,4400,NaN,NaN,0,NaN,90,max,NaN,NaN,NaN,NaN,NaN,NaN,NaN
+horizonal_acc,0,NaN,1200,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,max,NaN,NaN,NaN,NaN,NaN,NaN,NaN
+climb_descend,35400,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,military,NaN,NaN,NaN,NaN,NaN,NaN,NaN
+cruise_climb,38700,NaN,NaN,458,NaN,NaN,550,NaN,NaN,NaN,NaN,NaN,NaN,normal,NaN,NaN,NaN,NaN,NaN,NaN,NaN
+loiter,38700,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,10,NaN,NaN,normal,NaN,NaN,NaN,NaN,NaN,NaN,NaN
+climb_descend,47550,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,n/a,NaN,NaN,NaN,NaN,NaN,NaN,NaN
+combat,47550,NaN,NaN,536,NaN,NaN,NaN,NaN,NaN,NaN,5,NaN,NaN,max,NaN,NaN,NaN,NaN,NaN,NaN,NaN
+cruise,37000,NaN,NaN,458,NaN,NaN,550,NaN,NaN,NaN,NaN,NaN,NaN,normal,NaN,NaN,NaN,NaN,NaN,NaN,NaN
+loiter,35000,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,10,NaN,NaN,max_endurance,NaN,NaN,NaN,NaN,NaN,NaN,NaN
+land,0,90,NaN,NaN,NaN,NaN,NaN,NaN,NaN,5000,NaN,NaN,NaN,NaN,NaN,NaN,NaN,NaN,10,NaN,NaN

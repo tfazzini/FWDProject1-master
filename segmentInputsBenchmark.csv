@@ -1,0 +1,2 @@
+type,T0_TO,alt_TO,mu_TO,k_TO,warmupTime,accelTime,rotateTime,groundTime,TO_length,h_obs,ROCmax,startFuel,warmupFuel,runUpFuel,alt_L,T_L,mu_L,k_TD,L_length,sustain_g,instant_g,dash,dashTime,WP,WC,fuelReservePercent,fuelReserveHeight,fuelReserveTime,fuelReserveSpeed
+fighter,90,0,0.05,1.2,0,0,3,1800,4400,50,90,35,25,85,0,90,0.4,1.15,4400,1.2,4,0.8,60,453,210,10,0,0,0

@@ -1,0 +1,11 @@
+flight_condition,h,V,s,t,power
+takeoff,0,NaN,NaN,0,max
+horizontal_acc,NaN,1200,NaN,NaN,max
+climb,35400,NaN,NaN,NaN,military
+cruise_climb,38700,773,3.34E+06,NaN,normal
+loiter,38700,NaN,NaN,600,normal
+climb,47550,NaN,NaN,NaN,normal
+combat,47550,905,NaN,300,max
+cruise,37000,773,3.34E+06,NaN,normal
+loiter,35000,NaN,NaN,600,normal
+land,0,NaN,NaN,NaN,normal

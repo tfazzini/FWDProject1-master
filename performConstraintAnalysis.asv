@@ -1,0 +1,240 @@
+function [WS_con,TW_con] = performConstraintAnalysis(reqs, aero)
+
+val = getStdValues();
+
+% Create symbolic variables for T/W and W/S
+syms TW WS
+
+% Looping through constraints
+for i = 1:reqs.general.size
+    
+    switch reqs.general.req{i}
+        case 'stall'
+            %% Stall Velocity
+            %Only a function of stall speed and WS
+            if strcmp(reqs.general.case{i},'required') == 1
+                stallWS = CalcStall(reqs.stall.required.alt,aero.CLmax,reqs.stall.required.vel,reqs.stall.required.T0);
+                plotStall = double(stallWS);
+                hold on
+                line([plotStall plotStall],[0 5],'Color','red')
+                legendNames{i} = sprintf('Stall Velocity %.2f kts',reqs.stall.required.vel/val.kts_to_fts);
+            elseif strcmp(reqs.general.case{i},'desired') == 1
+                stallWS = CalcStall(reqs.stall.desired.alt,aero.CLmax,reqs.stall.desired.vel,reqs.stall.desired.T0);
+                plotStall = double(stallWS);
+                hold on
+                line([plotStall plotStall],[0 5],'Color','red','LineStyle','--')
+                legendNames{i} = sprintf('Stall Velocity %.2f kts',reqs.stall.desired.vel/val.kts_to_fts);
+            end
+            
+        case 'takeoff'
+                %% Takeoff Ground Roll (Not Excess Thrust)
+                if strcmp(reqs.general.case{i},'required') == 1
+                    [TO,TO_roll] = CalcTO(reqs.takeoff.required.engine,reqs.takeoff.required.burner,...
+                        reqs.takeoff.required.alt,reqs.takeoff.required.sTO,reqs.takeoff.required.sRoll,...
+                        aero.CD0,aero.K1,aero.K2,TW,WS,reqs.takeoff.required.B,aero.CDR_TO,reqs.takeoff.required.mu_TO,...
+                        aero.CLmax,reqs.takeoff.required.k_TO,val.g0,reqs.takeoff.required.t_accel,...
+                        reqs.takeoff.required.t_rotate,reqs.takeoff.required.angle_climb,...
+                        reqs.takeoff.required.RoC,reqs.takeoff.required.h_obs,reqs.takeoff.required.T0);
+                    legendNames{i} = 'Takeoff Required';
+                    hold on
+                    fplot(TO,'Color','green');
+                    %% Takeoff Ground Roll (Excess Thrust)
+%                     TO_Exc = CalcExcessTO(reqs.takeoff.required.engine,reqs.takeoff.required.burner,...
+%                         WS,reqs.takeoff.required.B,reqs.takeoff.required.alt,reqs.takeoff.required.sRoll,...
+%                         reqs.takeoff.required.k_TO,val.g0,aero.CLmax,reqs.takeoff.required.T0);
+%                     legendNames{i} = 'Excess Takeoff Required';
+%                     hold on
+%                     fplot(TO_Exc,'Color',[0 0.5 0]);
+                elseif strcmp(reqs.general.case{i},'desired') == 1
+                    [TO,TO_roll] = CalcTO(reqs.takeoff.desired.engine,reqs.takeoff.desired.burner,...
+                        reqs.takeoff.desired.alt,reqs.takeoff.desired.sTO,reqs.takeoff.desired.sRoll,...
+                        aero.CD0,aero.K1,aero.K2,TW,WS,reqs.takeoff.desired.B,aero.CDR_TO,reqs.takeoff.desired.mu_TO,...
+                        aero.CLmax,reqs.takeoff.desired.k_TO,val.g0,reqs.takeoff.desired.t_accel,...
+                        reqs.takeoff.desired.t_rotate,reqs.takeoff.desired.angle_climb,...
+                        reqs.takeoff.desired.RoC,reqs.takeoff.desired.h_obs,reqs.takeoff.desired.T0);
+                    legendNames{i} = 'Takeoff Desired';
+                    hold on
+                    fplot(TO,'Color','green','LineStyle','--');
+                    %% Takeoff Ground Roll (Excess Thrust)
+%                     TO_Exc = CalcExcessTO(reqs.takeoff.desired.engine,reqs.takeoff.desired.burner,...
+%                         WS,reqs.takeoff.desired.B,reqs.takeoff.desired.alt,reqs.takeoff.desired.sRoll,...
+%                         reqs.takeoff.desired.k_TO,val.g0,aero.CLmax,reqs.takeoff.desired.T0);
+%                     legendNames{i} = 'Excess Takeoff Required';
+%                     hold on
+%                     fplot(TO_Exc,'Color',[0 0.5 0],'LineStyle','--');
+                end
+
+        case 'horizontal_acc'
+            %% Horizontal Acceleration
+            if strcmp(reqs.general.case{i},'required') == 1
+                horiz_accel = CalcHorizAccel(reqs.accel.required.engine,reqs.accel.required.burner,...
+                    aero.K1,aero.K2,WS,aero.CD0,val.g0,reqs.accel.required.V_final,reqs.accel.required.V_init,...
+                    reqs.accel.required.t_accel,reqs.accel.required.alt,reqs.accel.required.B,reqs.accel.required.T0);
+                legendNames{i} = 'Horizontal Accel Required';
+                hold on
+                fplot(horiz_accel,'Color','magenta');
+            elseif strcmp(reqs.general.case{i},'desired') == 1
+                horiz_accel = CalcHorizAccel(reqs.accel.desired.engine,reqs.accel.desired.burner,...
+                    aero.K1,aero.K2,WS,aero.CD0,val.g0,reqs.accel.desired.V_final,reqs.accel.desired.V_init,...
+                    reqs.accel.desired.t_accel,reqs.accel.desired.alt,reqs.accel.desired.B,reqs.accel.desired.T0);
+                legendNames{i} = 'Horizontal Accel Desired';
+                hold on
+                fplot(horiz_accel,'Color','magenta','LineStyle','--');
+            end
+            
+        case 'climb'
+            %% Constant Speed Climb
+            if strcmp(reqs.general.case{i},'required') == 1
+                const_climb = CalcConstClimb(reqs.climb.required.engine,reqs.climb.required.burner,...
+                    aero.K1,aero.K2,WS,aero.CD0,reqs.climb.required.alt,reqs.climb.required.RoC,reqs.climb.required.vel,...
+                    reqs.climb.required.B,reqs.climb.required.T0);
+                legendNames{i} = 'Constant Climb Required';
+                hold on
+                fplot(const_climb,'Color','blue');
+            elseif strcmp(reqs.general.case{i},'desired') == 1
+                const_climb = CalcConstClimb(reqs.climb.desired.engine,reqs.climb.desired.burner,...
+                    aero.K1,aero.K2,WS,aero.CD0,reqs.climb.desired.alt,reqs.climb.desired.RoC,reqs.climb.desired.vel,...
+                    reqs.climb.desired.B,reqs.climb.desired.T0);
+                legendNames{i} = 'Constant Climb Desired';
+                hold on
+                fplot(const_climb,'Color','blue','LineStyle','--');
+            end
+                        
+        case 'cruise'
+            %% Constant Altitude/Speed Cruise
+            if strcmp(reqs.general.case{i},'required') == 1
+                const_cruise = CalcConstCruise(reqs.cruise.required.engine,reqs.cruise.required.burner,...
+                    aero.K1,aero.K2,WS,aero.CD0,reqs.cruise.required.alt,reqs.cruise.required.vel,reqs.cruise.required.B,...
+                    reqs.cruise.required.T0);
+                legendNames{i} = 'Constant Cruise Required';
+                hold on
+                fplot(const_cruise,'Color','black');
+            elseif strcmp(reqs.general.case{i},'desired') == 1
+                const_cruise = CalcConstCruise(reqs.cruise.desired.engine,reqs.cruise.desired.burner,...
+                    aero.K1,aero.K2,WS,aero.CD0,reqs.cruise.desired.alt,reqs.cruise.desired.vel,reqs.cruise.desired.B,...
+                    reqs.cruise.desired.T0);
+                legendNames{i} = 'Constant Cruise Desired';
+                hold on
+                fplot(const_cruise,'Color','black','LineStyle','--');
+            end
+            
+        case 'dash'
+            %% Constant Altitude/Speed Dash
+            if strcmp(reqs.general.case{i},'required') == 1
+                const_dash = CalcConstCruise(reqs.dash.required.engine,reqs.dash.required.burner,...
+                    aero.K1,aero.K2,WS,aero.CD0,reqs.dash.required.alt,reqs.dash.required.vel,reqs.dash.required.B,...
+                    reqs.dash.required.T0);
+                legendNames{i} = sprintf('%.2f kts Dash',reqs.dash.required.vel/val.kts_to_fts);
+                hold on
+                fplot(const_dash,'Color','cyan');
+            elseif strcmp(reqs.general.case{i},'desired') == 1
+                const_dash = CalcConstCruise(reqs.dash.desired.engine,reqs.dash.desired.burner,...
+                    aero.K1,aero.K2,WS,aero.CD0,reqs.dash.desired.alt,reqs.dash.desired.vel,reqs.dash.desired.B,...
+                    reqs.dash.desired.T0);
+                legendNames{i} = sprintf('%.2f kts Dash',reqs.dash.desired.vel/val.kts_to_fts);
+                hold on
+                fplot(const_dash,'Color','cyan','LineStyle','--');
+            end
+            
+        case 'turn'
+            %% Constant Altitude/Speed Turn
+            if strcmp(reqs.general.case{i},'required') == 1
+                const_turn = CalcConstTurn(reqs.turn.required.engine,reqs.turn.required.burner,...
+                    aero.K1,aero.K2,WS,aero.CD0,val.g0,reqs.turn.required.rad_turn,reqs.turn.required.alt,reqs.turn.required.vel,...
+                    reqs.turn.required.n,reqs.turn.required.B,reqs.turn.required.T0);
+                legendNames{i} = sprintf('%.1fg Turn',reqs.turn.required.n);
+                hold on
+                fplot(const_turn,'Color',[0.4 0.6 0.7]);
+            elseif strcmp(reqs.general.case{i},'desired') == 1
+                const_turn = CalcConstTurn(reqs.turn.desired.engine,reqs.turn.desired.burner,...
+                    aero.K1,aero.K2,WS,aero.CD0,val.g0,reqs.turn.desired.rad_turn,reqs.turn.desired.alt,reqs.turn.desired.vel,...
+                    reqs.turn.desired.n,reqs.turn.desired.B,reqs.turn.desired.T0);
+                legendNames{i} = sprintf('%.1fg Turn',reqs.turn.desired.n);
+                hold on
+                fplot(const_turn,'Color',[0.4 0.6 0.7],'LineStyle','--');
+            end
+        case 'land'
+            %% Landing
+            if strcmp(reqs.general.case{i},'required') == 1
+                Landing = CalcLanding(reqs.land.required.thrustRev,reqs.land.required.engine,...
+                    reqs.land.required.burner,reqs.land.required.alt,reqs.land.required.s_Roll,reqs.land.required.s_LandTot,...
+                    aero.CD0,aero.K1,aero.K2,TW,WS,reqs.land.required.B,aero.CDR_Land,reqs.land.required.mu_Land,aero.CLmax,...
+                    reqs.land.required.k_TD,reqs.land.required.k_obs,val.g0,reqs.land.required.t_FR,...
+                    reqs.land.required.h_obs,reqs.land.required.T0)
+                try
+                    plotLand = double(Landing);
+                    hold on
+                    line([plotLand plotLand],[0 5],'Color',[0.5 0.5 0.5])
+                    legendNames{i} = 'Landing Required';
+                catch landingError
+                    if (strcmp(landingError.message,'Unable to convert expression into double array.'))
+                        hold on
+                        fplot(Landing,'Color',[0.5 0.5 0.5])
+                        legendNames{i} = 'Landing Required';
+                    end
+                end
+            elseif strcmp(reqs.general.case{i},'desired') == 1
+                Landing = CalcLanding(reqs.land.desired.thrustRev,reqs.land.desired.engine,...
+                    reqs.land.desired.burner,reqs.land.desired.alt,reqs.land.desired.s_Roll,reqs.land.desired.s_LandTot,...
+                    aero.CD0,aero.K1,aero.K2,TW,WS,reqs.land.desired.B,aero.CDR_Land,reqs.land.desired.mu_Land,aero.CLmax,...
+                    reqs.land.desired.k_TD,reqs.land.desired.k_obs,val.g0,reqs.land.desired.t_FR,...
+                    reqs.land.desired.h_obs,reqs.land.desired.T0);
+                try
+                    plotLand = double(Landing);
+                    hold on
+                    line([plotLand plotLand],[0 5],'Color',[0.5 0.5 0.5],'LineStyle','--')
+                    legendNames{i} = 'Landing Desired';
+                catch landingError
+                    if (strcmp(landingError.message,'Unable to convert expression into double array.'))
+                        hold on
+                        fplot(Landing,[0 5],'Color',[0.5 0.5 0.5],'LineStyle','--')
+                        legendNames{i} = 'Landing Desired';
+                    end
+                end
+            end
+            
+        case 'ceiling'
+            %% Service Ceiling
+            if strcmp(reqs.general.case{i},'required') == 1
+                ceil = CalcCeil(reqs.ceil.required.engine,reqs.ceil.required.burner,...
+                    aero.K1,aero.K2,WS,aero.CD0,reqs.ceil.required.alt,reqs.ceil.required.RoC,reqs.ceil.required.vel,...
+                    reqs.ceil.required.B,reqs.ceil.required.T0);
+                if reqs.ceil.required.RoC == 0
+                    legendNames{i} = sprintf('Absolute Ceiling %.0f ft',reqs.ceil.required.alt);
+                elseif reqs.ceil.required.RoC == 100
+                    legendNames{i} = sprintf('Service Ceiling %.0f ft',reqs.ceil.required.alt);
+                else
+                    legendNames{i} = sprintf('Ceiling %.0f ft',reqs.ceil.required.alt);
+                end
+                hold on
+                fplot(ceil,'Color',[0 0.6 0.25]);
+            elseif strcmp(reqs.general.case{i},'desired') == 1
+                ceil = CalcCeil(reqs.ceil.desired.engine,reqs.ceil.desired.burner,...
+                    aero.K1,aero.K2,WS,aero.CD0,reqs.ceil.desired.alt,reqs.ceil.desired.RoC,reqs.ceil.desired.vel,...
+                    reqs.ceil.desired.B,reqs.ceil.desired.T0);
+                if reqs.ceil.desired.RoC == 0
+                    legendNames{i} = sprintf('Absolute Ceiling %.0f ft',reqs.ceil.desired.alt);
+                elseif reqs.ceil.desired.RoC == 100
+                    legendNames{i} = sprintf('Service Ceiling %.0f ft',reqs.ceil.desired.alt);
+                else
+                    legendNames{i} = sprintf('Ceiling %.0f ft',reqs.ceil.desired.alt);
+                end
+                hold on
+                fplot(ceil,'Color',[0 0.6 0.25],'LineStyle','--');
+            end
+            
+        otherwise
+            error('Invalid requirement name.')
+    end
+end
+
+axis([0 200 0 1.5]);
+legend(legendNames,'Location','best')
+ylabel('T_S_L/W_T_O')
+xlabel('W_T_O/S')
+set(gcf,'units','pixels','position',[100,100,1500,800])
+movegui(gcf,'center')
+hold off
+
+% Select T/W and W/S from plot
+[WS_con,TW_con] = ginput(1);

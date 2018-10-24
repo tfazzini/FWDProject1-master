@@ -1,0 +1,8 @@
+Parameter, Units, Value
+gravity,ft/s^2,32.174
+sea_level_density,slugs_per_ft^3,0.002378
+gam,NaN,1.4
+R,ftlb/slugR,1716
+Pstd,psf,2116.2
+Tstd,R,518.67
+k,/ft,-0.0000068756
