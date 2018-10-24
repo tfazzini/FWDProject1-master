@@ -16,6 +16,7 @@ val = getStdValues();
 Wf_Wi_taxi = val.taxi;
 
 Wf_Wi = Wf_Wi_taxi * Wf_Wi_warmup;
+Wf = Wi*Wf_Wi;
 fuelBurnedPerMin = ((Wi - Wf)/groundTime)*60;
 
 hf = hi;
