@@ -18,8 +18,8 @@ ROCmax = input.takeoff.ROCmax;
 % Required computed parameters
 val = getStdValues();
 g0 = val.g0;
-[~,~,~,rho,~,~] = atmModel(Vi, hi);
-TSFC = calcTSFC(power, Vi, hi);
+[~,~,~,rho,~,~,~] = atmModel(Vi, hi);
+[TSFC,~,~,~] = calcTSFC(power, Vi, hi);
 alpha = calcThrustLapse(power, Vi, hi);
 beta = Wi/WTO;
 
@@ -34,7 +34,7 @@ q = (1/2)*rho*(VTO^2);
     % L = W 
 Sreq = (beta*WTO)/(q*CLmax);
     % Calculate CD at CLmax
-CD = CD0 + CLmax*K1 + (CLmax^2)*K2;
+CD = CD0 + CLmax*K2 + (CLmax^2)*K1;
 epsilonTO = CD + CDR - mu*CLmax; 
     % Calculate T = D + R to determine Treq
 Treq = epsilonTO*q*Sreq + mu*beta*WTO;

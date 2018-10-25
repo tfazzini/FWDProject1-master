@@ -30,11 +30,11 @@ elseif alt > 104987 && alt <= 154199
 
 end
 
-rho = 1.233*(1-0.0000068758*alt)^(5.2561)/(T+((T0+459.67)-Tstd));
+rho = 1.233*((1-0.0000068758*alt)^(5.2561))/(T+((T0+459.67)-Tstd));
 
-Mach_gen = sqrt(gam*R*T);
+a = sqrt(gam*R*T);
 
-Mach = V/Mach_gen;
+Mach = V/a;
 
 d_0 = P/Pstd * (1 + (((gam - 1)/2) *Mach^2))^(gam/(gam-1));
 

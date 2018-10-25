@@ -1,7 +1,7 @@
 function [CD0, K1] = adjustAero(M0, CD0, K1)
 
 % CD0 from slide 51 in lecture 04B
-if M0 < 0.75
+if M0 <= 0.75
     CD0 = CD0;
 else
     m = (0.017 - 0.035)/(0.75 - 1.2);
@@ -14,15 +14,15 @@ else
 end
 
 % K1 from slide 50 in lecture 04B
-if M0 < 0.85
+if M0 <= 0.85
     K1 = K1;
 else
-   m = (0.14 - 0.2)/(0.85 - 1.35);
-    b = K1 - m*0.85;
+   m = (0.12 - 0.2)/(0.8 - 1.25);
+    b = K1 - m*0.8;
     K1 = m*M0 + b;  
-    if M0 > 1.35
-        m = (0.2 - 0.54)/(1.35 - 2.0);
-        b = K1 - m*1.35;
+    if M0 >= 1.35
+        m = (0.2 - 0.54)/(1.25 - 2.0);
+        b = K1 - m*1.25;
         K1 = m*M0 + b;   
     end
 end 

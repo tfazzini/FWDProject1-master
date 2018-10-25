@@ -2,10 +2,10 @@ function [Wf, hf, Vf, Treq, Sreq, alpha] =...
     performClimb(T_SL, S, WTO, Wi, Vi, hi, power, hf, Vf)
 
 BC = false;
-if strcmp(hf,'BCA') == 1 || strcmp(Vf,'BCM') == 1
-    [hf, Vf,~,~] = calcBCAandBCM(S, WTO, Wi);
-    BC = true;
-end
+% if strcmp(hf,'BCA') == 1 || strcmp(Vf,'BCM') == 1
+%     [hf, Vf,~,~] = calcBCAandBCM(S, WTO, Wi);
+%     BC = true;
+% end
 
 Wstart = Wi;
 
@@ -14,7 +14,7 @@ val = getStdValues();
 g0 = val.g0;
 
 % Breaking up into segments based on 1000 ft height change
-separation = 500000000;
+separation = 1000;
 deltah = hf - hi;
 deltaV = Vf - Vi;
 dV2g = (Vf^2 - Vi^2)/(2*g0);
@@ -22,7 +22,7 @@ ze = deltah + dV2g;
 if abs(ze) > separation
     n_true = abs(ze)/separation;
     delh_seg = deltah/n_true;
-    h_vec = (hi:delh_seg:hf);
+    h_vec = hi:delh_seg:hf;
     if h_vec(end) > hf
         h_vec = h_vec(1:end-1);
         if h_vec(end) < hf
@@ -72,7 +72,7 @@ if abs(ze) > separation
 else
     [Wf_Wi, Treq, Sreq, alpha] =...
         performClimbSegment(T_SL, S, WTO, Wi, Vi, hi, power, hf, Vf, BC);
-    Wf = Wf_Wi * Wi;
+    Wf = Wf_Wi * Wstart;
         
 end 
 

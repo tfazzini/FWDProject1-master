@@ -59,6 +59,8 @@ if h_obs > hi
 else 
     % Total takeoff distance
     sTO = sG + sTR;
+    hf = hi;
+    Vf = Vi;
 end
 
 Wf_Wi_final = prod(Wf_Wi);
