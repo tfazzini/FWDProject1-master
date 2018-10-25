@@ -34,7 +34,7 @@ Sreq = [Sreq; Sreq_tmp];
 Wi = Wf_Wi_tmp*Wi;
 
 % Takeoff rotation
-[Wf_Wi_tmp,hf,Vf,Treq_tmp,Sreq_tmp,alpha_tmp,sTR,theta] =...
+[Wf_Wi_tmp,hi,Vi,Treq_tmp,Sreq_tmp,alpha_tmp,sTR,theta] =...
     performTakeoffRotation(T_SL, S, WTO, Wi, Vi, hi, power, rotateTime,...
     input);
 Wf_Wi = [Wf_Wi; Wf_Wi_tmp];
@@ -44,7 +44,7 @@ Sreq = [Sreq; Sreq_tmp];
 Wi = Wf_Wi_tmp*Wi;
 
 % Check if there is an obstacle to clear and calculate if so
-if h_obs > hf
+if h_obs > hi
     % Takeoff clear obstacle
     [Wf_Wi_tmp,hf,Vf,Treq_tmp,Sreq_tmp,alpha_tmp,sCL] =...
     performTakeoffClearObstacle(T_SL, WTO, Wi, Vi, hi, power, theta,...
