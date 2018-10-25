@@ -1,6 +1,6 @@
 function [TSFC, radicalTheta, C1, C2] = calcTSFC(power, V, alt)
 
-[M,~,~,~,T,~] = atmModel(V, alt);
+[M,~,~,~,T,~,~] = atmModel(V, alt);
 
 % Standard parameters
 val = getStdValues();

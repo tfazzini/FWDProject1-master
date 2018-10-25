@@ -16,14 +16,14 @@ k_TO = input.takeoff.k_TO;
 % Required computed parameters
 val = getStdValues();
 g0 = val.g0;
-[~,~,~,rho,~,~] = atmModel(Vi, hi);
+[~,~,~,rho,~,~,~] = atmModel(Vi, hi);
 
 % Calculate takeoff velocity
 Vstall = calcVstall(S, Wi, Vi, hi);
 VTO = k_TO*Vstall;
 
 % Required computed parameters
-TSFC = calcTSFC(power, mean([Vi, VTO]), hi);
+[TSFC,~,~,~] = calcTSFC(power, mean([Vi, VTO]), hi);
 alpha = calcThrustLapse(power, mean([Vi, VTO]), hi);
 beta = Wi/WTO;
    % Calculate dynamic pressure

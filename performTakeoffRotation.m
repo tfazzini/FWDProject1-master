@@ -18,8 +18,8 @@ ROCmax = input.takeoff.ROCmax;
 % Required computed parameters
 val = getStdValues();
 g0 = val.g0;
-[~,~,~,rho,~,~] = atmModel(Vi, hi);
-TSFC = calcTSFC(power, Vi, hi);
+[~,~,~,rho,~,~,~] = atmModel(Vi, hi);
+[TSFC,~,~,~] = calcTSFC(power, Vi, hi);
 alpha = calcThrustLapse(power, Vi, hi);
 beta = Wi/WTO;
 

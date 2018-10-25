@@ -1,6 +1,6 @@
 function [Wf_Wi, hf, Vf, Treq, Sreq, alpha, sCL] =...
     performTakeoffClearObstacle(T_SL, WTO, Wi, Vi, hi, power, theta, input)
-
+ 
 % Aerodynamic paraeters
 aero = getAeroData();
 CLmax = aero.CLmax;
@@ -22,8 +22,8 @@ sCL = (h_obs - hi)/tan(theta);
 % Calculate the final velocity, Vclimb, assuming Vclimb is when 
 % CL = 0.8CLmax, and then if there is a maximum ROC, check to ensure 
 % the calcuated ROC is less than ROCmax, and if not, adjust Vclimb
-[~,~,~,rho,~,~] = atmModel(Vi, hi);
-TSFC = calcTSFC(power, Vi, hi);
+[~,~,~,rho,~,~,~] = atmModel(Vi, hi);
+[TSFC,~,~,~] = calcTSFC(power, Vi, hi);
 alpha = calcThrustLapse(power, Vi, hi);
 beta = Wi/WTO;
 
