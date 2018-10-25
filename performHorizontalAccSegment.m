@@ -7,8 +7,8 @@ g0 = val.g0;
 deltaV2 = Vf^2 - Vi^2;
 dV2g = deltaV2/(2*g0);
 avgV = mean([Vi, Vf]);
-[~,~,~,rho,~,M0] = atmModel(avgV, hi);
-TSFC = calcTSFC(power, avgV, hi);
+[M,~,~,rho,~,M0,~] = atmModel(avgV, hi);
+[TSFC,~,~,~] = calcTSFC(power, avgV, hi);
 alpha = calcThrustLapse(power, avgV, hi);
 beta = Wi/WTO;
 
@@ -23,15 +23,17 @@ q = (1/2)*rho*(avgV^2);
 if BC == true
     [~,~,CL,CD] = calcBCAandBCM(S, WTO, Wi);
 else
-    LD = 0.866*aero.LDmax;
-    CD = Wi/(q*S);
-    CL = LD*CD;
+%     LD = 0.866*aero.LDmax;
+%     CD = Wi/(q*S);
+%     CL = LD*CD;
+CL = Wi/(q*S);
+CD = (K1*CL^2) + (K2*CL) + CD0;
 end
 
 % Calculating weight fraction
 u = (CD/CL)*(beta/alpha)*(WTO/T_SL);
 
-Wf_Wi = exp(-(TSFC/avgV)*(dV2g/(1 - u)));
+Wf_Wi = exp(-(((C1/M)+C2)/astd)*(dV2g/(1 - u)));
 
 % Calculate thurst and wing area required
 Sreq = (beta*WTO)/(q*CL);
