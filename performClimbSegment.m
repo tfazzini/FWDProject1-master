@@ -12,7 +12,7 @@ dV2g = deltaV2/(2*g0);
 avgV = mean([Vi, Vf]);
 avgh = mean([hi, hf]);
 [M,~,~,rho,~,M0,~] = atmModel(avgV, avgh);
-TSFC  = calcTSFC(power, avgV, avgh);
+[TSFC,~,~,~]  = calcTSFC(power, avgV, avgh);
 alpha = calcThrustLapse(power, avgV, avgh);
 beta = Wi/WTO;
 
@@ -30,10 +30,10 @@ q = (1/2)*rho*(avgV^2);
 %     LD = aero.LDmax;
 %     CD = Wi/(q*S);
 %     CL = LD*CD;
-%     delta = calcDeltaFromAlt(avgh);
-%     CL = (2*beta*(WTO/S))/(gamma*Pstd*delta*(M^2));
-%     CD = ((K1*CL^2) + (K2*CL) + CD0);
-end
+delta = calcDeltaFromAlt(avgh);
+CL = (2*beta*(WTO/S))/(gamma*Pstd*delta*(M^2));
+CD = ((K1*CL^2) + (K2*CL) + CD0);
+% end
 
 % Calculating weight fraction
 u = (CD/CL)*(beta/alpha)*(WTO/T_SL);

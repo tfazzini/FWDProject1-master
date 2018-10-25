@@ -29,7 +29,7 @@ beta = Wi/WTO;
 
 q = (1/2)*rho*(Vi^2);
 CL = 0.8*CLmax;
-CD = CD0 + K1*CL + K2*(CL^2);
+CD = CD0 + K2*CL + K1*(CL^2);
 
 % Calculate thrust and wing area required
 Sreq = (beta*WTO)/(q*CL);

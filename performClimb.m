@@ -2,10 +2,10 @@ function [Wf, hf, Vf, Treq, Sreq, alpha] =...
     performClimb(T_SL, S, WTO, Wi, Vi, hi, power, hf, Vf)
 
 BC = false;
-if strcmp(hf,'BCA') == 1 || strcmp(Vf,'BCM') == 1
-    [hf, Vf,~,~] = calcBCAandBCM(S, WTO, Wi);
-    BC = true;
-end
+% if strcmp(hf,'BCA') == 1 || strcmp(Vf,'BCM') == 1
+%     [hf, Vf,~,~] = calcBCAandBCM(S, WTO, Wi);
+%     BC = true;
+% end
 
 Wstart = Wi;
 
