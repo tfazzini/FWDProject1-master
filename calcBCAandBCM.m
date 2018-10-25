@@ -4,7 +4,7 @@ function [alt_BCA, V_BCM, CL, CD] = calcBCAandBCM(S, WTO, Wi)
 CLstar = sqrt(CD0/K1);
 CDstar = 2*CD0+K2*sqrt(CD0/K1);
 
-
+WfWi = exp(-(C1/M_Crit+C2)*(sqrt(4*CD0*K1)+K2)*delS/astd)
 
 
 

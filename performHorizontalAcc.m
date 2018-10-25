@@ -24,26 +24,26 @@ if abs(ze) > separation
             Vnext = sqrt(Vi^2 + separation*2*g0);
             V_vec = [V_vec; Vnext];
             Vi = Vnext;
-        end 
+        end
         if V_vec(end) > Vf
             V_vec = V_vec(1:end-1);
             if V_vec(end) < Vf
                 V_vec(end+1) = Vf;
-            end 
-        end 
+            end
+        end
     else
-        while V_vec(end) >= Vf  
+        while V_vec(end) >= Vf
             Vnext = sqrt(Vi^2 - separation*2*g0);
             V_vec = [V_vec; Vnext];
             Vi = Vnext;
-        end             
+        end
         if V_vec(end) < Vf
             V_vec = V_vec(1:end-1);
             if V_vec(end) > Vf
                 V_vec(end+1) = Vf;
-            end 
-        end 
-    end 
+            end
+        end
+    end
     n = length(V_vec);
     % Loop through mission segments
     [Wf_Wi, Treq, alpha, Sreq] = deal(zeros(n-1,1));

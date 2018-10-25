@@ -2,6 +2,10 @@ function [Wf, hf, Vf, Treq, Sreq, alpha] =...
     performCruise(S, WTO, Wi, power, Vf, hf, s)
 
 Wstart = Wi;
+% 
+% CL = W/(1/2*rho*V^2*S);
+
+
 
 BC = false;
 if strcmp(hf,'BCA') == 1 || strcmp(Vf,'BCM') == 1
@@ -14,7 +18,7 @@ if strcmp(Vf,'max_endurance')
 end 
 
 % Breaking up into segments based on 100000 ft distance traveled
-separation = 100000;
+separation = 1000;
 if s > separation
      s_vec = (0:separation:s);
     if s ~= s_vec(end)
