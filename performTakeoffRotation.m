@@ -24,12 +24,13 @@ alpha = calcThrustLapse(power, Vi, hi);
 beta = Wi/WTO;
 
 % Calculate takeoff velocity
-Vstall = calcVstall(S, Wi, Vi, hi);
-VTO = k_TO*Vstall;
+% Vstall = calcVstall(S, Wi, Vi, hi);
+% VTO = k_TO*Vstall;
+VTO=Vi;
    % Calculate dynamic pressure
 q = (1/2)*rho*(VTO^2);
 
-% Calculate thurst required to overcome drag and area required
+% Calculate thrust required to overcome drag and area required
     % L = W 
 Sreq = (beta*WTO)/(q*CLmax);
     % Calculate CD at CLmax
@@ -45,14 +46,14 @@ else
 end
 % Calculate the rotation distance
 sR = rotateTime*VTO;
-sTR = (VTO^2*sin(theta))/(g0*(0.8*(k_TO^2) - 1));
+sTR = ((VTO^2)*sin(theta))/(g0*(0.8*(k_TO^2) - 1));
 s = sR + sTR;
 
 % Calculate weight fraction
 Wf_Wi = 1 - TSFC*(alpha/beta)*(T_SL/WTO)*rotateTime;
 
 % Calculate rotation height
-hTR = (VTO^2*(1-cos(theta)))/(g0*(0.8*(k_TO^2) - 1));
+hTR = ((VTO^2)*(1-cos(theta)))/(g0*(0.8*(k_TO^2) - 1));
 
 hf = hTR;
 Vf = VTO;
