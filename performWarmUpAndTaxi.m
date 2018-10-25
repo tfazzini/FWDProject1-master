@@ -3,12 +3,10 @@ function [Wf_Wi, hf, Vf, Treq, Sreq, alpha, fuelBurnedPerMin] =...
     groundTime)
 
 % Warm-up
-%this TSFC needs to be adaptive for mach, and is currently not
 TSFC = calcTSFC(power, Vi, hi);
 alpha = calcThrustLapse(power, Vi, hi);
 beta = Wi/WTO;
 
-%TSFC here should be equal to C1*radicalTheta because M=0
 Wf_Wi_warmup = 1 - TSFC*(alpha/beta)*(T_SL/WTO)*warmupTime;
 
 % Taxi
