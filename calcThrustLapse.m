@@ -16,7 +16,7 @@ end
 if strcmp(engineType, 'turbojet') == 1
     % Checking whether afterburners used
     if burner == true
-        alpha1 = 0.8*d_0*(1-0.3*(theta_0-1)-0.1*sqrt(Mach));
+        alpha1 = d_0*(1-0.3*(theta_0-1)-0.1*sqrt(Mach));
         alpha2 = (0.952 + (0.3*(Mach - 0.4)^2)) * sigma^0.7;
         alpha = max(alpha1,alpha2);
     else
